@@ -45,16 +45,24 @@ class GcpPermissionSet:
         del self._permissions_dict[v1_key]
 
     def contains(self, permission: str) -> bool:
-        return GcpPermission(permission).__hash__() in self._permissions_dict \
+        try:
+            perm = GcpPermission(permission)
+        except ValueError:
+            return False
+        return perm.__hash__() in self._permissions_dict \
             or any(p.v1_override == permission for p in self.permissions)
 
     def get(self, permission: str) -> Optional[GcpPermission]:
-        if not GcpPermission(permission).__hash__() in self._permissions_dict:
+        try:
+            perm = GcpPermission(permission)
+        except ValueError:
+            return None
+        if not perm.__hash__() in self._permissions_dict:
             if any(p.v1_override == permission for p in self.permissions):
                 return next(p for p in self.permissions if p.v1_override == permission)
             return None
         else:
-            return self._permissions_dict[GcpPermission(permission).__hash__()]
+            return self._permissions_dict[perm.__hash__()]
 
     def describe(self, permission: str) -> Optional[dict[str]]:
         perm = self.get(permission)

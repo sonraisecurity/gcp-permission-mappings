@@ -10,16 +10,6 @@ from typing_extensions import Self
 # https://cloud.google.com/iam/docs/deny-permissions-support
 class GcpPermission:
 
-    @staticmethod
-    def is_v2_name(permission: str):
-        return '.googleapis.com/' in permission
-
-    @staticmethod
-    def v2_to_v1(permission: str):
-        if not GcpPermission.is_v2_name(permission):
-            raise ValueError('{} is not a V2 GCP permission'.format(permission))
-        return permission.replace('.googleapis.com/', '.')
-
     def __init__(self, permission_name, deny_support=False):
         if not re.match(r'[\w-]+\.(?:googleapis\.com/)?[\w-]+\.[\w-]+', permission_name):
             raise ValueError('"{}" does not appear to be a GCP Permission...'.format(permission_name))
