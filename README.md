@@ -2,6 +2,8 @@
 
 A utility for compiling and exploring the complete set of abstract GCP permissions and their various (IAM V1, IAM V2, etc.) representations. This is intended primarily an education and research tool, and its use has not been tested in production environments.
 
+If you just want to see the V1/V2 representations of each permission and check for deny support without playing around in Python, check out [mappings.json](mappings.json).
+
 ## Usage Examples:
 
 ### Answering questions about the set of all GCP permissions
