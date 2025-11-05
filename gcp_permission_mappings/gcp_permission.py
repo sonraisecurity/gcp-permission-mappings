@@ -21,6 +21,9 @@ class GcpPermission:
         return permission.replace('.googleapis.com/', '.')
 
     def __init__(self, permission_name, deny_support=False):
+        if not re.match(r'[\w-]+\.(?:googleapis\.com/)?[\w-]+\.[\w-]+', permission_name):
+            raise ValueError('"{}" does not appear to be a GCP Permission...'.format(permission_name))
+
         self.has_v1 = False
         self.has_v2 = False
         self.v1_override = None
@@ -34,12 +37,11 @@ class GcpPermission:
             self.has_v1 = True
             [service, action] = permission_name.split('.', 1)
 
+        if self.deny_support and not self.has_v2:
+            raise ValueError('Permission cannot have deny support without a V2 representation')
+
         self.service = service
         self.action = action
-
-        # TODO Error handling:
-        # - Ensure it meets either V1 or V2 spec
-        # - Ensure either meets V2 or deny support is false
 
     def __eq__(self, other: Self):
         return self.service == other.service and self.action == other.action
@@ -58,6 +60,13 @@ class GcpPermission:
         self.deny_support |= other.deny_support
         if not self.v1_override:
             self.v1_override = other.v1_override
+
+    def describe(self):
+        return {
+            'V1': self.as_v1(),
+            'V2': self.as_v2(),
+            'Deny Policy Support': self.deny_support
+        }
 
     def as_v1(self):
         if not self.has_v1:

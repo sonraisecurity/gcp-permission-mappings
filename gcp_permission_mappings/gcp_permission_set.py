@@ -56,6 +56,10 @@ class GcpPermissionSet:
         else:
             return self._permissions_dict[GcpPermission(permission).__hash__()]
 
+    def describe(self, permission: str) -> Optional[dict[str]]:
+        perm = self.get(permission)
+        return perm.describe() if perm else None
+
 
 def load_permission_set(live=False):
     if live:
