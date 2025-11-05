@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gcp_permission_mappings"
+dynamic = ["version"]
+authors = [
+    { name = "Nigel Sood", email = "nigel.sood@sonraisecurity.com" }
+]
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+keywords = [
+    "gcp",
+    "permissions",
+    "iam"
+]
+dependencies = [
+    "requests",
+    "bs4"
+]
+license = { text = "MIT" }
+
+[project.urls]
+"Homepage" = "https://github.com/sonraisecurity/gcp-permission-mappings"
+"Bug Tracker" = "https://github.com/sonraisecurity/gcp-permission-mappings/issues"
+
+[tool.setuptools.package-data]
+"gcp_permission_mappings" = [
+    "resources/*.json"
+]
